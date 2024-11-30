@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ring Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: #222;
+}
+
+canvas {
+    border: 2px solid white;
+}
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script src="game.js"></script>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const ringRadius = 30;
+const obstacleWidth = 30;
+const obstacleHeight = 30;
+const playerSpeed = 5;
+const obstacleSpeed = 2;
+
+let playerX = canvas.width / 2;
+let playerY = canvas.height - ringRadius - 10;
+let rightPressed = false;
+let leftPressed = false;
+
+let obstacles = [];
+let gameOver = false;
+let score = 0;
+
+// Handle key presses for movement
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+    if (e.key === "Right" || e.key === "ArrowRight") {
+        rightPressed = true;
+    }
+    if (e.key === "Left" || e.key === "ArrowLeft") {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if (e.key === "Right" || e.key === "ArrowRight") {
+        rightPressed = false;
+    }
+    if (e.key === "Left" || e.key === "ArrowLeft") {
+        leftPressed = false;
+    }
+}
+
+// Generate a new obstacle
+function createObstacle() {
+    let obstacleX = Math.random() * (canvas.width - obstacleWidth);
+    obstacles.push({ x: obstacleX, y: -obstacleHeight });
+}
+
+// Move obstacles
+function moveObstacles() {
+    for (let i = 0; i < obstacles.length; i++) {
+        obstacles[i].y += obstacleSpeed;
+        // Remove obstacles that are off the screen
+        if (obstacles[i].y > canvas.height) {
+            obstacles.splice(i, 1);
+            score++;
+            i--;
+        }
+    }
+}
+
+// Detect collisions
+function detectCollisions() {
+    for (let i = 0; i < obstacles.length; i++) {
+        let distX = playerX - (obstacles[i].x + obstacleWidth / 2);
+        let distY = playerY - (obstacles[i].y + obstacleHeight / 2);
+        let distance = Math.sqrt(distX * distX + distY * distY);
+
+        if (distance < ringRadius + obstacleWidth / 2) {
+            gameOver = true;
+        }
+    }
+}
+
+// Draw everything on the canvas
+function draw() {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the player ring
+    ctx.beginPath();
+    ctx.arc(playerX, playerY, ringRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.closePath();
+
+    // Draw obstacles
+    for (let i = 0; i < obstacles.length; i++) {
+        ctx.beginPath();
+        ctx.rect(obstacles[i].x, obstacles[i].y, obstacleWidth, obstacleHeight);
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    // Draw the score
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText("Score: " + score, 10, 30);
+
+    // Draw "Game Over" message
+    if (gameOver) {
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "red";
+        ctx.fillText("GAME OVER", canvas.width / 2 - 90, canvas.height / 2);
+    }
+}
+
+// Update player position based on key presses
+function updatePlayerPosition() {
+    if (rightPressed && playerX < canvas.width - ringRadius) {
+        playerX += playerSpeed;
+    }
+    if (leftPressed && playerX > ringRadius) {
+        playerX -= playerSpeed;
+    }
+}
+
+// Main game loop
+function gameLoop() {
+    if (gameOver) return;
+
+    // Create new obstacles occasionally
+    if (Math.random() < 0.02) {
+        createObstacle();
+    }
+
+    // Move the obstacles
+    moveObstacles();
+
+    // Detect collisions
+    detectCollisions();
+
+    // Update player position
+    updatePlayerPosition();
+
+    // Draw everything
+    draw();
+
+    // Call the game loop again
+    requestAnimationFrame(gameLoop);
+}
+
+// Start the game
+gameLoop();
+    </script>
+</body>
+</html>
+
+
+<!-- #### CSS (`style.css`): -->
+
+
+
+```
+
+<!-- #### JavaScript (`game.js`): -->
+

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar with Login, Settings, and Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline;
+    margin: 0 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.nav-links a:hover {
+    background-color: #575757;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 5px;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Button Styles */
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #575757;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#" id="loginBtn">Login</a></li>
+            <li><a href="#" id="settingsBtn">Settings</a></li>
+            <li><a href="#" id="profileBtn">Profile</a></li>
+        </ul>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeLogin">&times;</span>
+            <h2>Login</h2>
+            <form>
+                <input type="text" placeholder="Username" required><br>
+                <input type="password" placeholder="Password" required><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeSettings">&times;</span>
+            <h2>Settings</h2>
+            <form>
+                <label for="theme">Theme</label>
+                <select id="theme" name="theme">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select><br>
+                <button type="submit">Save Settings</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeProfile">&times;</span>
+            <h2>Your Profile</h2>
+            <p>Name: John Doe</p>
+            <p>Email: john@example.com</p>
+            <button>Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the modal elements
+const loginModal = document.getElementById("loginModal");
+const settingsModal = document.getElementById("settingsModal");
+const profileModal = document.getElementById("profileModal");
+
+// Get the buttons that open the modals
+const loginBtn = document.getElementById("loginBtn");
+const settingsBtn = document.getElementById("settingsBtn");
+const profileBtn = document.getElementById("profileBtn");
+
+// Get the elements that close the modals
+const closeLogin = document.getElementById("closeLogin");
+const closeSettings = document.getElementById("closeSettings");
+const closeProfile = document.getElementById("closeProfile");
+
+// Open the login modal
+loginBtn.onclick = function() {
+    loginModal.style.display = "block";
+}
+
+// Open the settings modal
+settingsBtn.onclick = function() {
+    settingsModal.style.display = "block";
+}
+
+// Open the profile modal
+profileBtn.onclick = function() {
+    profileModal.style.display = "block";
+}
+
+// Close the login modal
+closeLogin.onclick = function() {
+    loginModal.style.display = "none";
+}
+
+// Close the settings modal
+closeSettings.onclick = function() {
+    settingsModal.style.display = "none";
+}
+
+// Close the profile modal
+closeProfile.onclick = function() {
+    profileModal.style.display = "none";
+}
+
+// Close the modals if clicked outside of them
+window.onclick = function(event) {
+    if (event.target === loginModal) {
+        loginModal.style.display = "none";
+    } else if (event.target === settingsModal) {
+        settingsModal.style.display = "none";
+    } else if (event.target === profileModal) {
+        profileModal.style.display = "none";
+    }
+}
+
+    </script>
+</body>
+</html>
